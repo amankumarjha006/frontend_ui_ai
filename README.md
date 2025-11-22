@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✨ Frontend UI AI Generator
 
-## Getting Started
+Transform UI ideas into production-ready code in seconds.  
+This project uses **AI (KAT-Coder-Pro model via OpenRouter)** to convert a simple text prompt into fully functional **HTML/CSS/JS** components which can be instantly previewed in the browser.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- 🎨 Generate clean and responsive UI from plain text prompts
+- ⚡ Real-time preview inside the app
+- 👨‍💻 Toggle between Preview and Code view
+- ⏱️ Built in a hackathon timeframe… somehow
+- 🧠 Powered by **Generative AI (OpenRouter)**
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technologies Used |
+|------|------------------|
+| Frontend | Next.js 14, React, Tailwind CSS |
+| Backend | API Routes (Next.js) |
+| AI Model | KAT-Coder-Pro via OpenRouter |
+| Icons | Lucide Icons |
+| Code Sandbox | iframe rendering |
+
+---
+
+## 🧩 How It Works
+
+1. User enters a UI description prompt
+2. The app sends the text to OpenRouter API
+3. AI returns generated component code
+4. Code is rendered automatically inside the preview
+5. User can switch to “Code” tab to view the source
+
+---
+
+## 📸 Screenshot
+
+> *Replace the link below with your uploaded image on GitHub*
+
+![App Screenshot](./screenshot.png)
+
+*(If you want, rename the image to `screenshot.png` and place it inside the project root or public folder.)*
+
+---
+
+## 🔑 Environment Setup
+
+Create a `.env.local` file:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+OPENROUTER_API_KEY=your_key_here
