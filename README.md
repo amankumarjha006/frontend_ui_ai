@@ -1,4 +1,4 @@
-<img width="1920" height="1080" alt="Screenshot 2025-11-22 125912" src="https://github.com/user-attachments/assets/000e3883-4ef0-4df8-b18c-e9d4fe06c284" /># ✨ Frontend UI AI Generator
+✨ Frontend UI AI Generator
 
 Transform UI ideas into production-ready code in seconds.  
 This project uses **AI (KAT-Coder-Pro model via OpenRouter)** to convert a simple text prompt into fully functional **HTML/CSS/JS** components which can be instantly previewed in the browser.
@@ -39,7 +39,7 @@ This project uses **AI (KAT-Coder-Pro model via OpenRouter)** to convert a simpl
 
 ## 📸 Screenshot
 
-> *Replace the link below with your uploaded image on GitHub*
+<img width="1920" height="1080" alt="Screenshot 2025-11-22 125912" src="https://github.com/user-attachments/assets/000e3883-4ef0-4df8-b18c-e9d4fe06c284" /># 
 
 
 
