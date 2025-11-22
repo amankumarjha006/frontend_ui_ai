@@ -309,7 +309,7 @@ export default function Home() {
               <div className="h-[600px]">
                 {activeTab === 'preview' ? (
                   <div className="h-full p-4">
-                    {code ? (
+                    {code && previewUrl ? (
                       <div className="h-full bg-white rounded-xl overflow-hidden shadow-2xl">
                         <iframe
                           key={iframeKey}
