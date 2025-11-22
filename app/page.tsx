@@ -10,7 +10,7 @@ import {
   Download, 
   Check, 
   RefreshCw,
-  Zap,
+  Bot,
   Layers,
   Palette,
   Github,
@@ -119,7 +119,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20 pointer-events-none" />
+      <div className="fixed inset-0 bg-linear-to-br from-purple-900/20 via-transparent to-pink-900/20 pointer-events-none" />
       <div className="fixed top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="fixed bottom-0 right-1/4 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -127,24 +127,15 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-linear-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                <Bot className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h1 className="text-xl font-bold">CodeForge AI</h1>
-                <p className="text-xs text-gray-500">Powered by Kat-Coder-Pro</p>
+                
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <a 
-                href="https://openrouter.ai" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1"
-              >
-                OpenRouter <ExternalLink className="w-3 h-3" />
-              </a>
-            </div>
+            
           </div>
         </div>
       </header>
@@ -156,7 +147,7 @@ export default function Home() {
             AI-Powered Code Generation
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
               Transform Ideas into Code
             </span>
           </h2>
@@ -184,7 +175,7 @@ export default function Home() {
 
         <div className="grid lg:grid-cols-5 gap-6">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl border border-white/10 p-6">
+            <div className="bg-white/3 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
               <label className="block text-sm font-medium text-gray-300 mb-3">
                 Describe your component
               </label>
@@ -205,7 +196,7 @@ export default function Home() {
               <button
                 onClick={handleGenerate}
                 disabled={isLoading || !prompt.trim()}
-                className="mt-4 w-full px-6 py-3.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20 disabled:shadow-none"
+                className="mt-4 w-full px-6 py-3.5 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20 disabled:shadow-none"
               >
                 {isLoading ? (
                   <>
@@ -221,7 +212,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl border border-white/10 p-6">
+            <div className="bg-white/3 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
               <h3 className="text-sm font-medium text-gray-300 mb-4 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-purple-400" />
                 Try these examples
@@ -232,7 +223,7 @@ export default function Home() {
                     key={index}
                     onClick={() => setPrompt(example.prompt)}
                     disabled={isLoading}
-                    className="w-full text-left px-4 py-3 bg-white/[0.02] hover:bg-white/[0.06] border border-white/5 hover:border-purple-500/30 rounded-xl text-sm text-gray-300 transition-all duration-200 flex items-center justify-between group disabled:opacity-50"
+                    className="w-full text-left px-4 py-3 bg-white/2 hover:bg-white/2 border border-white/5 hover:border-purple-500/30 rounded-xl text-sm text-gray-300 transition-all duration-200 flex items-center justify-between group disabled:opacity-50"
                   >
                     <span>{example.label}</span>
                     <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-purple-400 transition-colors" />
@@ -243,7 +234,7 @@ export default function Home() {
           </div>
 
           <div className="lg:col-span-3">
-            <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden h-full">
+            <div className="bg-white/3 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden h-full">
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/20">
                 <div className="flex gap-1">
                   <button
@@ -301,7 +292,7 @@ export default function Home() {
 
               {error && (
                 <div className="mx-4 mt-4 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
                   <span>{error}</span>
                 </div>
               )}
