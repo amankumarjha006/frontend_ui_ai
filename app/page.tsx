@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Send, 
   Sparkles, 
@@ -16,10 +16,10 @@ import {
   Github,
   ExternalLink,
   ChevronRight,
-  Terminal
+  Terminal,
+  AlertCircle
 } from 'lucide-react';
 
-// Example prompts for users to try
 const examplePrompts = [
   { label: "Login Form", prompt: "A modern glassmorphism login form with email, password, remember me checkbox, and social login buttons" },
   { label: "Pricing Cards", prompt: "Three animated pricing cards with hover effects, featuring Free, Pro, and Enterprise tiers" },
@@ -37,17 +37,21 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview');
   const [copied, setCopied] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // Update iframe content when code changes
+  // Generate a blob URL for the iframe to avoid cross-origin issues
+  const [previewUrl, setPreviewUrl] = useState<string>('');
+
   useEffect(() => {
-    if (iframeRef.current && code) {
-      const doc = iframeRef.current.contentDocument || iframeRef.current.contentWindow?.document;
-      if (doc) {
-        doc.open();
-        doc.write(code);
-        doc.close();
-      }
+    if (code) {
+      // Create a new blob URL for the HTML content
+      const blob = new Blob([code], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      setPreviewUrl(url);
+      
+      // Clean up the blob URL when component unmounts or code changes
+      return () => {
+        URL.revokeObjectURL(url);
+      };
     }
   }, [code, iframeKey]);
 
@@ -64,17 +68,28 @@ export default function Home() {
         body: JSON.stringify({ prompt })
       });
 
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server returned an invalid response. Please check if the API route exists.');
+      }
+
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to generate code');
       }
 
+      if (!data.code) {
+        throw new Error('No code was generated. Please try again.');
+      }
+
       setCode(data.code);
       setActiveTab('preview');
       setIframeKey(prev => prev + 1);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
+      console.error('Generation error:', err);
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -104,12 +119,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
-      {/* Animated background gradient */}
       <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20 pointer-events-none" />
       <div className="fixed top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="fixed bottom-0 right-1/4 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Header */}
       <header className="relative border-b border-white/5 bg-black/20 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -131,22 +144,12 @@ export default function Home() {
               >
                 OpenRouter <ExternalLink className="w-3 h-3" />
               </a>
-              <a 
-                href="https://github.com" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
-              >
-                <Github className="w-4 h-4" />
-              </a>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="relative max-w-7xl mx-auto px-6 py-8">
-        {/* Hero Section */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm mb-6">
             <Sparkles className="w-4 h-4" />
@@ -163,7 +166,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Features Pills */}
         <div className="flex flex-wrap justify-center gap-3 mb-10">
           {[
             { icon: Layers, label: 'Complete Components' },
@@ -180,11 +182,8 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Main Grid */}
         <div className="grid lg:grid-cols-5 gap-6">
-          {/* Input Panel */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Prompt Input Card */}
             <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl border border-white/10 p-6">
               <label className="block text-sm font-medium text-gray-300 mb-3">
                 Describe your component
@@ -222,7 +221,6 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Example Prompts */}
             <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl border border-white/10 p-6">
               <h3 className="text-sm font-medium text-gray-300 mb-4 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-purple-400" />
@@ -244,10 +242,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Output Panel */}
           <div className="lg:col-span-3">
             <div className="bg-white/[0.03] backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden h-full">
-              {/* Tabs */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/20">
                 <div className="flex gap-1">
                   <button
@@ -303,14 +299,13 @@ export default function Home() {
                 )}
               </div>
 
-              {/* Error Message */}
               {error && (
-                <div className="mx-4 mt-4 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm">
-                  {error}
+                <div className="mx-4 mt-4 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-300 text-sm flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>{error}</span>
                 </div>
               )}
 
-              {/* Content Area */}
               <div className="h-[600px]">
                 {activeTab === 'preview' ? (
                   <div className="h-full p-4">
@@ -318,9 +313,9 @@ export default function Home() {
                       <div className="h-full bg-white rounded-xl overflow-hidden shadow-2xl">
                         <iframe
                           key={iframeKey}
-                          ref={iframeRef}
+                          src={previewUrl}
                           className="w-full h-full"
-                          sandbox="allow-scripts allow-modals"
+                          sandbox="allow-scripts allow-modals allow-forms allow-popups"
                           title="Preview"
                         />
                       </div>
@@ -360,18 +355,12 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="relative border-t border-white/5 mt-16">
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-500">
               Built with Next.js • Powered by OpenRouter & KwaiPilot Kat-Coder-Pro
             </p>
-            <div className="flex items-center gap-6">
-              <a href="#" className="text-sm text-gray-500 hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="text-sm text-gray-500 hover:text-white transition-colors">Terms</a>
-              <a href="#" className="text-sm text-gray-500 hover:text-white transition-colors">API Docs</a>
-            </div>
           </div>
         </div>
       </footer>
